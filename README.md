@@ -138,12 +138,57 @@ In a representative enterprise deployment scenario:
 ## Repository Structure
 ```
 secure-enterprise-knowledge-hub/
-├── app/                # Core application logic
-├── architecture/       # Diagrams and threat models
-├── tests/              # Unit, integration, and red-team tests
-├── observability/      # Metrics and logging
-├── docker/             # Containerization
-└── .github/workflows/  # CI/CD pipelines
+├── README.md
+│
+├── architecture/
+│   ├── architecture-diagram.png      # System architecture (draw.io / Excalidraw)
+│   └── threat-model.md               # Prompt injection, data leakage, misuse
+│
+├── app/
+│   ├── api/
+│   │   ├── main.py                   # FastAPI entrypoint
+│   │   ├── auth.py                   # Auth / token validation
+│   │   ├── chat.py                   # /chat endpoint
+│   │   └── health.py                 # Health checks
+│   │
+│   ├── llm/
+│   │   ├── gateway.py                # LiteLLM / Portkey routing
+│   │   ├── prompts.py                # System + task prompts
+│   │   └── guardrails.py             # NeMo / Guardrails AI integration
+│   │
+│   ├── retrieval/
+│   │   ├── ingestion.py              # Document ingestion & chunking
+│   │   └── vector_store.py           # Pinecone / FAISS abstraction
+│   │
+│   ├── security/
+│   │   ├── policy_engine.py          # Enterprise policy enforcement
+│   │   ├── pii_detection.py          # PII scanning & filtering
+│   │   └── audit_logger.py           # SIEM-friendly logs
+│   │
+│   └── config.py                     # Env & provider config
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── redteam/
+│       ├── promptfoo.yaml            # Prompt attack scenarios
+│       └── garak_config.yaml         # Optional Garak tests
+│
+├── observability/
+│   ├── logging.py                    # Structured logging
+│   └── metrics.py                    # OpenTelemetry metrics
+│
+├── docker/
+│   ├── Dockerfile
+│   └── docker-compose.yml
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml                    # Tests + red-teaming in CI
+│
+├── requirements.txt
+└── .env.example
+
 ```
 
 ---
