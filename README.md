@@ -1,5 +1,7 @@
 # Secure Enterprise Knowledge Hub (ECKH)
 
+![alt text](image-1.png)
+
 ## Overview
 Secure Enterprise Knowledge Hub (ECKH) is a **security-first, enterprise-grade conversational AI platform** designed to provide safe, compliant, and auditable access to internal organizational knowledge using Generative AI.
 
@@ -218,4 +220,5 @@ It demonstrates practical experience at the intersection of:
 
 ## Disclaimer
 This repository uses synthetic or publicly available documents for demonstration purposes only. No real enterprise data is included.
+
 
