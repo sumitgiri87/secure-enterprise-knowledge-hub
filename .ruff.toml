@@ -1,0 +1,36 @@
+# Ruff configuration file
+# Alternative to pyproject.toml configuration
+
+line-length = 100
+target-version = "py311"
+
+[lint]
+# Enable specific rule sets
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+]
+
+# Ignore specific rules that are too strict for now
+ignore = [
+    "E501",  # line too long (handled by black)
+]
+
+# Exclude files and directories
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    "build",
+    "dist",
+    "*.egg-info",
+]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports
+"tests/*" = ["S101"]      # Allow assert in tests

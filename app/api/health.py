@@ -13,9 +13,10 @@ Endpoints:
 - GET /health/live - Liveness check (simple ping)
 """
 
-from fastapi import APIRouter, status
-from datetime import datetime
 import os
+from datetime import datetime
+
+from fastapi import APIRouter, status
 
 router = APIRouter()
 
@@ -24,10 +25,10 @@ router = APIRouter()
 async def health_check():
     """
     Basic health check endpoint.
-    
+
     Returns:
         dict: Health status and basic system info
-    
+
     Example Response:
         {
             "status": "healthy",
@@ -40,7 +41,7 @@ async def health_check():
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "version": "1.0.0",
-        "environment": os.getenv("ENVIRONMENT", "development")
+        "environment": os.getenv("ENVIRONMENT", "development"),
     }
 
 
@@ -48,10 +49,10 @@ async def health_check():
 async def liveness_check():
     """
     Kubernetes liveness probe endpoint.
-    
+
     Should return 200 if the application is running.
     If this fails, Kubernetes will restart the pod.
-    
+
     Returns:
         dict: Simple alive status
     """
@@ -62,37 +63,37 @@ async def liveness_check():
 async def readiness_check():
     """
     Kubernetes readiness probe endpoint.
-    
+
     Checks if the application is ready to accept traffic.
     Should verify:
     - Database connectivity
     - External service availability
     - Cache connectivity
     - Model loading status
-    
+
     Returns:
         dict: Readiness status with dependency checks
-    
+
     Note:
         In production, add actual dependency checks here.
         Example: database connection, Redis, vector store, LLM provider
     """
-    
+
     # TODO: Add actual dependency checks
     dependencies = {
         "database": "healthy",  # TODO: Check actual DB connection
         "cache": "healthy",  # TODO: Check Redis connection
         "vector_store": "healthy",  # TODO: Check Pinecone/Weaviate
-        "llm_provider": "healthy"  # TODO: Check LLM API availability
+        "llm_provider": "healthy",  # TODO: Check LLM API availability
     }
-    
+
     # Determine overall readiness
     all_healthy = all(status == "healthy" for status in dependencies.values())
-    
+
     return {
         "status": "ready" if all_healthy else "not_ready",
         "timestamp": datetime.utcnow().isoformat() + "Z",
-        "dependencies": dependencies
+        "dependencies": dependencies,
     }
 
 
