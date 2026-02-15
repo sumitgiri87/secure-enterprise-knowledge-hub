@@ -24,9 +24,9 @@ Storage Recommendations:
 - Regular backups to cold storage (Glacier, Archive tier)
 """
 
-import json
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
 from observability.logging import logger
 
 
@@ -39,14 +39,14 @@ def audit_event(
     policy_decision: str,
     guardrail_triggered: bool,
     response_status: str,
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = None,
 ):
     """
     Log a comprehensive audit event.
-    
+
     This function creates an immutable audit trail for compliance.
     All events should be stored in tamper-proof storage.
-    
+
     Args:
         request_id: Unique request identifier
         user_id: User who initiated the request
@@ -57,7 +57,7 @@ def audit_event(
         guardrail_triggered: Whether any content guardrails were triggered
         response_status: Response status (pending, completed, failed, blocked)
         metadata: Additional context (conversation_id, department, etc.)
-    
+
     Audit Record Structure:
     {
         "audit_version": "1.0",
@@ -72,7 +72,7 @@ def audit_event(
         "response_status": "completed",
         "metadata": {...}
     }
-    
+
     Example:
         audit_event(
             request_id="req_abc123",
@@ -90,7 +90,7 @@ def audit_event(
             }
         )
     """
-    
+
     # Build audit event
     event = {
         "audit_version": "1.0",
@@ -104,20 +104,20 @@ def audit_event(
         "policy_decision": policy_decision,
         "guardrail_triggered": guardrail_triggered,
         "response_status": response_status,
-        "metadata": metadata or {}
+        "metadata": metadata or {},
     }
-    
+
     # Log to structured logger
     # This will be captured by log aggregation systems
     logger.info(event)
-    
+
     # TODO: Also write to dedicated audit storage
     # Examples:
     # - S3 with Object Lock (WORM - Write Once Read Many)
     # - Azure Blob Storage with Immutability Policy
     # - Dedicated audit database with append-only tables
     # - SIEM integration (Splunk, Datadog, etc.)
-    
+
     return event
 
 
@@ -127,13 +127,13 @@ def audit_authentication_event(
     success: bool,
     ip_address: Optional[str] = None,
     user_agent: Optional[str] = None,
-    failure_reason: Optional[str] = None
+    failure_reason: Optional[str] = None,
 ):
     """
     Log authentication attempt.
-    
+
     Critical for security monitoring and compliance.
-    
+
     Args:
         user_id: User attempting authentication
         auth_method: Method used (api_key, oauth, azure_ad, etc.)
@@ -141,7 +141,7 @@ def audit_authentication_event(
         ip_address: Source IP address
         user_agent: User agent string
         failure_reason: Reason for failure (if applicable)
-    
+
     Example:
         audit_authentication_event(
             user_id="alice@company.com",
@@ -160,26 +160,21 @@ def audit_authentication_event(
         "success": success,
         "ip_address": ip_address,
         "user_agent": user_agent,
-        "failure_reason": failure_reason
+        "failure_reason": failure_reason,
     }
-    
+
     logger.info(event)
     return event
 
 
 def audit_authorization_event(
-    user_id: str,
-    role: str,
-    resource: str,
-    action: str,
-    decision: str,
-    reason: Optional[str] = None
+    user_id: str, role: str, resource: str, action: str, decision: str, reason: Optional[str] = None
 ):
     """
     Log authorization decision.
-    
+
     Tracks access control decisions for compliance.
-    
+
     Args:
         user_id: User requesting access
         role: User's role
@@ -187,7 +182,7 @@ def audit_authorization_event(
         action: Action requested (read, write, delete, etc.)
         decision: Authorization decision (allow, deny)
         reason: Reason for decision
-    
+
     Example:
         audit_authorization_event(
             user_id="alice@company.com",
@@ -207,9 +202,9 @@ def audit_authorization_event(
         "resource": resource,
         "action": action,
         "decision": decision,
-        "reason": reason
+        "reason": reason,
     }
-    
+
     logger.info(event)
     return event
 
@@ -221,13 +216,13 @@ def audit_data_access(
     data_classification: str,
     access_method: str,
     records_accessed: int,
-    purpose: Optional[str] = None
+    purpose: Optional[str] = None,
 ):
     """
     Log data access for GDPR Article 30 compliance.
-    
+
     Required for demonstrating compliance with data processing records.
-    
+
     Args:
         user_id: User accessing data
         role: User's role
@@ -236,7 +231,7 @@ def audit_data_access(
         access_method: How data was accessed (rag_retrieval, direct_query, etc.)
         records_accessed: Number of records accessed
         purpose: Business purpose for access
-    
+
     Example:
         audit_data_access(
             user_id="alice@company.com",
@@ -258,9 +253,9 @@ def audit_data_access(
         "data_classification": data_classification,
         "access_method": access_method,
         "records_accessed": records_accessed,
-        "purpose": purpose
+        "purpose": purpose,
     }
-    
+
     logger.info(event)
     return event
 
@@ -272,13 +267,13 @@ def audit_guardrail_trigger(
     severity: str,
     trigger_reason: str,
     action_taken: str,
-    content_sample: Optional[str] = None
+    content_sample: Optional[str] = None,
 ):
     """
     Log guardrail trigger event.
-    
+
     Critical for monitoring AI safety and content moderation.
-    
+
     Args:
         request_id: Request that triggered the guardrail
         user_id: User whose request triggered it
@@ -287,7 +282,7 @@ def audit_guardrail_trigger(
         trigger_reason: Detailed reason for trigger
         action_taken: Action taken (blocked, flagged, redacted, etc.)
         content_sample: Sample of problematic content (redacted if needed)
-    
+
     Example:
         audit_guardrail_trigger(
             request_id="req_abc123",
@@ -309,9 +304,9 @@ def audit_guardrail_trigger(
         "severity": severity,
         "trigger_reason": trigger_reason,
         "action_taken": action_taken,
-        "content_sample": content_sample
+        "content_sample": content_sample,
     }
-    
+
     logger.warning(event)  # Use WARNING level for guardrail triggers
     return event
 
@@ -324,11 +319,11 @@ def audit_model_usage(
     tokens_used: int,
     cost_usd: float,
     latency_ms: float,
-    success: bool
+    success: bool,
 ):
     """
     Log model usage for cost tracking and performance monitoring.
-    
+
     Args:
         request_id: Request identifier
         user_id: User who initiated the request
@@ -338,7 +333,7 @@ def audit_model_usage(
         cost_usd: Estimated cost in USD
         latency_ms: Response time in milliseconds
         success: Whether the request succeeded
-    
+
     Example:
         audit_model_usage(
             request_id="req_abc123",
@@ -362,36 +357,34 @@ def audit_model_usage(
         "tokens_used": tokens_used,
         "cost_usd": cost_usd,
         "latency_ms": latency_ms,
-        "success": success
+        "success": success,
     }
-    
+
     logger.info(event)
     return event
 
 
 # Export audit summary statistics
 def get_audit_summary(
-    start_time: datetime,
-    end_time: datetime,
-    user_id: Optional[str] = None
+    start_time: datetime, end_time: datetime, user_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Generate audit summary for compliance reporting.
-    
+
     This would typically query your audit storage backend.
     For now, this is a placeholder.
-    
+
     Args:
         start_time: Start of reporting period
         end_time: End of reporting period
         user_id: Optional user filter
-    
+
     Returns:
         Summary statistics
     """
     # TODO: Implement actual query against audit storage
     # Example: Query S3, Splunk, or audit database
-    
+
     return {
         "period_start": start_time.isoformat(),
         "period_end": end_time.isoformat(),
@@ -401,14 +394,14 @@ def get_audit_summary(
         "guardrails_triggered": 0,  # TODO: Implement
         "unique_users": 0,  # TODO: Implement
         "total_tokens": 0,  # TODO: Implement
-        "total_cost_usd": 0.0  # TODO: Implement
+        "total_cost_usd": 0.0,  # TODO: Implement
     }
 
 
 if __name__ == "__main__":
     # Test audit logging functions
     import uuid
-    
+
     # Test AI audit event
     audit_event(
         request_id=str(uuid.uuid4()),
@@ -419,17 +412,14 @@ if __name__ == "__main__":
         policy_decision="allow",
         guardrail_triggered=False,
         response_status="completed",
-        metadata={"test": True}
+        metadata={"test": True},
     )
-    
+
     # Test authentication event
     audit_authentication_event(
-        user_id="test_user",
-        auth_method="api_key",
-        success=True,
-        ip_address="127.0.0.1"
+        user_id="test_user", auth_method="api_key", success=True, ip_address="127.0.0.1"
     )
-    
+
     # Test guardrail trigger
     audit_guardrail_trigger(
         request_id=str(uuid.uuid4()),
@@ -437,5 +427,5 @@ if __name__ == "__main__":
         guardrail_type="toxicity",
         severity="medium",
         trigger_reason="Mild profanity detected",
-        action_taken="flagged"
+        action_taken="flagged",
     )
