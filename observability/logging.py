@@ -56,13 +56,11 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         """
         Add standard fields to log record.
         """
-        super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
-        
-        # Always include timestamp
+        # Add timestamp first
         if not log_record.get('timestamp'):
             log_record['timestamp'] = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         
-        # Always include log level
+        # Add log level
         if log_record.get('level'):
             log_record['level'] = log_record['level'].upper()
         else:
@@ -70,6 +68,9 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         
         # Include logger name for debugging
         log_record['logger'] = record.name
+        
+        # Now call parent to add remaining fields
+        super(CustomJsonFormatter, self).add_fields(log_record, record, message_dict)
 
 
 # Create console handler with JSON formatting

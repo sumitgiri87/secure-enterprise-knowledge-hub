@@ -117,11 +117,20 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     """
     request_id = getattr(request.state, "request_id", "unknown")
     
+    # Convert errors to JSON-serializable format
+    error_details = []
+    for error in exc.errors():
+        error_details.append({
+            "loc": list(error.get("loc", [])),
+            "msg": str(error.get("msg", "")),
+            "type": error.get("type", "")
+        })
+    
     logger.warning({
         "event_type": "validation_error",
         "request_id": request_id,
         "path": request.url.path,
-        "errors": exc.errors(),
+        "errors": error_details,
         "body": str(exc.body) if hasattr(exc, 'body') else None
     })
     
@@ -130,7 +139,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={
             "error": "validation_error",
             "message": "Request validation failed",
-            "details": exc.errors(),
+            "details": error_details,
             "request_id": request_id
         }
     )

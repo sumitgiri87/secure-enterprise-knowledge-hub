@@ -83,6 +83,7 @@ class ChatRequest(BaseModel):
         description="Optional metadata (department, project, etc.)"
     )
     
+
     @field_validator("message")
     @classmethod
     def validate_message(cls, v: str) -> str:
@@ -100,7 +101,7 @@ class ChatRequest(BaseModel):
         # Basic prompt injection detection
         # This is a simple check; production should use NeMo Guardrails or similar
         suspicious_patterns = [
-            r"ignore\s+(previous|all|above)\s+instructions?",
+            r"ignore.*instructions",  # Catches "ignore all previous instructions"
             r"system\s*prompt",
             r"you\s+are\s+now",
             r"<\s*script",
@@ -116,6 +117,8 @@ class ChatRequest(BaseModel):
                 )
         
         return v
+
+
     
     @field_validator("user_id", "conversation_id")
     @classmethod
