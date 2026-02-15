@@ -203,7 +203,7 @@ User Request
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/secure-enterprise-knowledge-hub.git
+git clone <repository-url>
 cd secure-enterprise-knowledge-hub
 ```
 
