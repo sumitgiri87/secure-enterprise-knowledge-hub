@@ -70,7 +70,7 @@ Large organizations face critical challenges when adopting Generative AI for int
 
 SEKH implements a **defense-in-depth** approach with multiple security layers between users and AI models:
 
-![Architecture Diagram](architecture/architecture-diagram.png)
+![Architecture Diagram](https://github.com/sumitgiri87/secure-enterprise-knowledge-hub/blob/main/architecture/architecture-diagram.jpg)
 
 ### Data Flow
 
