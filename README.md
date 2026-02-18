@@ -8,21 +8,7 @@
 
 **A security-first, enterprise-grade conversational AI platform for safe, compliant, and auditable access to organizational knowledge.**
 
----
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Problem Statement](#problem-statement)
-- [Solution Architecture](#solution-architecture)  
-- [Key Features](#key-features)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Testing](#testing)
-- [Security & Compliance](#security--compliance)
-- [API Documentation](#api-documentation)
-- [Roadmap](#roadmap)
 
 ---
 
