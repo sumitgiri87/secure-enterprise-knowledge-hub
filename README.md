@@ -13,22 +13,7 @@
 
 ---
 
-## 📋 Table of Contents
 
-- [Overview](#overview)
-- [What's Working Now](#whats-working-now)
-- [Problem Statement](#problem-statement)
-- [Solution Architecture](#solution-architecture)  
-- [Key Features](#key-features)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Testing](#testing)
-- [Security & Compliance](#security--compliance)
-- [API Documentation](#api-documentation)
-- [Roadmap](#roadmap)
-
----
 
 ## 🎯 Overview
 
