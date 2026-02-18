@@ -1,44 +1,78 @@
+
+# ─────────────────────────────────────────────────────────────
+# PHASE 1: Secure API Foundation
+# ─────────────────────────────────────────────────────────────
+
 # FastAPI and ASGI server
-fastapi==0.115.0
-uvicorn[standard]==0.32.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
 
-# Pydantic - using version with pre-built wheels for Python 3.13
-pydantic==2.10.3
-pydantic-settings==2.7.0
-
-# Authentication & Security
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-python-multipart==0.0.12
-
-# Logging
-python-json-logger==2.0.7
-
-# HTTP Client
-httpx==0.27.2
-aiohttp==3.11.11
+# Pydantic (validation)
+pydantic>=2.0.0,<2.11
+pydantic-settings>=2.0.0
 
 # Environment variables
-python-dotenv==1.0.1
+python-dotenv>=1.0.0
 
+# Logging
+python-json-logger>=2.0.7
+
+# Auth (future Azure AD / OAuth)
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.12
+
+# ─────────────────────────────────────────────────────────────
+# PHASE 2: LLM Integration
+# ─────────────────────────────────────────────────────────────
+
+# LiteLLM - universal LLM gateway (Azure, AWS, GCP, OpenAI, Anthropic)
+litellm>=1.30.0
+
+# OpenAI SDK (used by LiteLLM for Azure OpenAI)
+openai>=1.30.0
+
+# Token counting (know how many tokens before calling API)
+tiktoken>=0.7.0
+
+# HTTP client (for async API calls)
+httpx>=0.27.0
+
+# ─────────────────────────────────────────────────────────────
+# PHASE 2 (Optional): Production Rate Limiting
+# Install this when you have Redis running
+# ─────────────────────────────────────────────────────────────
+
+# redis>=5.0.0          # Uncomment when Redis is available
+
+# ─────────────────────────────────────────────────────────────
+# PHASE 3 (Future): RAG Pipeline
+# ─────────────────────────────────────────────────────────────
+
+# langchain>=0.2.0      # Uncomment for Phase 3
+# langchain-openai      # Uncomment for Phase 3
+# pinecone-client       # Uncomment for Phase 3 (vector store)
+
+# ─────────────────────────────────────────────────────────────
+# PHASE 4 (Future): Security & Guardrails
+# ─────────────────────────────────────────────────────────────
+
+# presidio-analyzer     # Uncomment for Phase 4 (PII detection)
+# presidio-anonymizer   # Uncomment for Phase 4
+
+# ─────────────────────────────────────────────────────────────
 # Testing
-pytest==8.3.4
-pytest-asyncio==0.24.0
-pytest-cov==6.0.0
+# ─────────────────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-asyncio>=0.24.0
+pytest-cov>=4.0.0
+httpx>=0.27.0
 
+# ─────────────────────────────────────────────────────────────
 # Development
-black==24.10.0
-ruff==0.8.4
-mypy==1.13.0
-
-# Optional: For future Azure AD integration
-# msal==1.31.0
-# azure-identity==1.19.0
-
-# Optional: For future AWS integration
-# boto3==1.35.80
-
-# Optional: For future observability
-# opentelemetry-api==1.29.0
-# opentelemetry-sdk==1.29.0
-# opentelemetry-instrumentation-fastapi==0.50b0
+# ─────────────────────────────────────────────────────────────
+black>=24.0.0
+ruff>=0.1.0
+mypy>=1.0.0
+bandit>=1.7.0
+safety>=3.0.0
