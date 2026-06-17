@@ -1,0 +1,33 @@
+# garak red-team configuration for secure-enterprise-knowledge-hub.
+#
+# garak probes the deployed model behind the hub for known LLM failure modes
+# and reports findings against the OWASP LLM Top 10 taxonomy.
+#
+#   garak --config tests/redteam/garak_config.yaml
+#
+# Starter template - point `uri` at your deployment and set $API_KEY.
+# Docs: https://github.com/NVIDIA/garak
+
+plugins:
+  model_type: rest
+  # promptinject    - direct / indirect prompt injection
+  # latentinjection - injection via retrieved / ingested content
+  # leakreplay      - context / training-data leakage
+  # xss             - unsafe output handling
+  probe_spec: promptinject,latentinjection,leakreplay,xss
+
+rest:
+  RestGenerator:
+    name: secure-enterprise-knowledge-hub
+    uri: "http://localhost:8000/api/chat"
+    method: post
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer $API_KEY"
+    req_template_json_object:
+      message: "$INPUT"
+    response_json: true
+    response_json_field: "response"
+
+reporting:
+  taxonomy: owasp
